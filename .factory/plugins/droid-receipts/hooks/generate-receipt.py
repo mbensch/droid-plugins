@@ -104,6 +104,336 @@ def escape_xml(text: str) -> str:
         .replace("'", "&apos;"))
 
 
+def escape_html(text: str) -> str:
+    """Escape HTML special characters."""
+    return (text
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#039;"))
+
+
+def generate_html(session_data: dict) -> str:
+    """Generate HTML receipt from session data."""
+    
+    # Extract data
+    session_id = session_data["session_id"]
+    session_short = session_id[:8] if len(session_id) >= 8 else session_id
+    location = session_data.get("location", "The Cloud")[:30]
+    model = session_data["model"]
+    model_name = get_model_name(model)
+    droid_name = generate_droid_name(session_id)
+    tokens = session_data["tokens"]
+    end_time = session_data.get("end_time", datetime.now().isoformat())
+    active_time = session_data.get("active_time_ms", 0)
+    
+    # Calculate totals
+    input_tokens = tokens.get("inputTokens", 0)
+    output_tokens = tokens.get("outputTokens", 0)
+    cache_write = tokens.get("cacheCreationTokens", 0)
+    cache_read = tokens.get("cacheReadTokens", 0)
+    total_tokens = input_tokens + output_tokens + cache_write + cache_read
+    
+    # Format date
+    try:
+        dt = datetime.fromisoformat(end_time.replace("Z", "+00:00"))
+        date_str = dt.strftime("%Y-%m-%d %H:%M:%S")
+    except:
+        date_str = end_time
+    
+    duration_str = format_duration(active_time)
+    
+    # Escape text
+    location = escape_html(location)
+    model_name = escape_html(model_name)
+    droid_name = escape_html(droid_name)
+    session_short = escape_html(session_short)
+    
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Droid Receipt - {session_short}</title>
+  <style>
+    * {{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }}
+    
+    body {{
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }}
+    
+    .receipt {{
+      background: #fafafa;
+      width: 400px;
+      padding: 30px 25px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      animation: slideIn 0.5s ease-out;
+    }}
+    
+    @keyframes slideIn {{
+      from {{ opacity: 0; transform: translateY(-20px); }}
+      to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    
+    .header {{
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #333;
+    }}
+    
+    .logo {{
+      font-family: Arial, sans-serif;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: #333;
+      margin-bottom: 5px;
+    }}
+    
+    .subtitle {{
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 2px;
+    }}
+    
+    .model-badge {{
+      background: #333;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 20px 0;
+      font-size: 12px;
+      font-weight: bold;
+    }}
+    
+    .meta {{
+      margin: 15px 0;
+    }}
+    
+    .meta-row {{
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px dashed #ccc;
+    }}
+    
+    .meta-row:last-child {{
+      border-bottom: none;
+    }}
+    
+    .meta-label {{
+      color: #666;
+    }}
+    
+    .meta-value {{
+      color: #333;
+      font-weight: 500;
+    }}
+    
+    .separator {{
+      border-bottom: 2px solid #333;
+      margin: 15px 0;
+    }}
+    
+    .items-header {{
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-weight: bold;
+      border-bottom: 1px dashed #ccc;
+    }}
+    
+    .item {{
+      margin: 8px 0;
+    }}
+    
+    .item-row {{
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      color: #555;
+    }}
+    
+    .item-row .qty {{
+      text-align: center;
+      flex: 1;
+    }}
+    
+    .item-row .price {{
+      text-align: right;
+      min-width: 80px;
+    }}
+    
+    .item-label {{
+      min-width: 120px;
+    }}
+    
+    .total-section {{
+      border-top: 2px solid #333;
+      margin-top: 15px;
+      padding-top: 15px;
+    }}
+    
+    .total-row {{
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 5px 0;
+    }}
+    
+    .footer {{
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 2px dashed #ccc;
+    }}
+    
+    .cashier {{
+      color: #333;
+      margin-bottom: 15px;
+    }}
+    
+    .thank-you {{
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 15px;
+    }}
+    
+    .github-link {{
+      font-size: 11px;
+      color: #999;
+    }}
+    
+    .github-link a {{
+      color: #666;
+      text-decoration: none;
+    }}
+    
+    .github-link a:hover {{
+      color: #333;
+    }}
+    
+    @media print {{
+      body {{
+        background: white;
+      }}
+      .receipt {{
+        box-shadow: none;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="header">
+      <div class="logo">FACTORY</div>
+      <div class="subtitle">DROID RECEIPT</div>
+    </div>
+    
+    <div style="text-align: center;">
+      <span class="model-badge">{model_name}</span>
+    </div>
+    
+    <div class="meta">
+      <div class="meta-row">
+        <span class="meta-label">Location</span>
+        <span class="meta-value">{location}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Session</span>
+        <span class="meta-value">{session_short}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Date</span>
+        <span class="meta-value">{date_str}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Duration</span>
+        <span class="meta-value">{duration_str}</span>
+      </div>
+    </div>
+    
+    <div class="separator"></div>
+    
+    <div class="items-header">
+      <span>ITEM</span>
+      <span>QTY</span>
+      <span>PRICE</span>
+    </div>
+    
+    <div class="item">
+      <div class="item-row">
+        <span class="item-label">Input tokens</span>
+        <span class="qty">{format_number(input_tokens)}</span>
+        <span class="price">{format_currency(input_tokens)}</span>
+      </div>
+      <div class="item-row">
+        <span class="item-label">Output tokens</span>
+        <span class="qty">{format_number(output_tokens)}</span>
+        <span class="price">{format_currency(output_tokens)}</span>
+      </div>'''
+    
+    if cache_write > 0:
+        html += f'''
+      <div class="item-row">
+        <span class="item-label">Cache write</span>
+        <span class="qty">{format_number(cache_write)}</span>
+        <span class="price">{format_currency(cache_write)}</span>
+      </div>'''
+    
+    if cache_read > 0:
+        html += f'''
+      <div class="item-row">
+        <span class="item-label">Cache read</span>
+        <span class="qty">{format_number(cache_read)}</span>
+        <span class="price">{format_currency(cache_read)}</span>
+      </div>'''
+    
+    html += f'''
+    </div>
+    
+    <div class="total-section">
+      <div class="total-row">
+        <span>TOTAL</span>
+        <span>{format_currency(total_tokens)}</span>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="cashier">SERVED BY: {droid_name}</div>
+      <div class="thank-you">Thank you for building!</div>
+      <div class="github-link">
+        <a href="https://github.com/Factory-AI/factory" target="_blank">github.com/Factory-AI/factory</a>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    console.log('Droid Receipt Generated!');
+    console.log('Session: {session_short}');
+    console.log('Total: {format_currency(total_tokens)}');
+  </script>
+</body>
+</html>'''
+    
+    return html
+
+
 def generate_svg(session_data: dict) -> str:
     """Generate SVG receipt from session data."""
     
@@ -318,19 +648,32 @@ def main():
         # Create output directory
         RECEIPTS_DIR.mkdir(parents=True, exist_ok=True)
         
-        # Generate SVG
-        svg_content = generate_svg(session_data)
+        # Determine output format from env or default to both
+        output_format = os.environ.get("DROID_RECEIPT_FORMAT", "html").lower()
         
-        # Save receipt
-        output_path = RECEIPTS_DIR / f"{session_id}.svg"
-        with open(output_path, "w") as f:
-            f.write(svg_content)
+        # Generate and save receipts
+        opened_path = None
         
-        print(f"Receipt saved to {output_path}")
+        if output_format in ("html", "both"):
+            html_content = generate_html(session_data)
+            html_path = RECEIPTS_DIR / f"{session_id}.html"
+            with open(html_path, "w") as f:
+                f.write(html_content)
+            print(f"HTML receipt saved to {html_path}")
+            opened_path = html_path
         
-        # Optionally open in browser (macOS)
-        if sys.platform == "darwin":
-            os.system(f'open "{output_path}"')
+        if output_format in ("svg", "both"):
+            svg_content = generate_svg(session_data)
+            svg_path = RECEIPTS_DIR / f"{session_id}.svg"
+            with open(svg_path, "w") as f:
+                f.write(svg_content)
+            print(f"SVG receipt saved to {svg_path}")
+            if not opened_path:
+                opened_path = svg_path
+        
+        # Open in browser (macOS)
+        if opened_path and sys.platform == "darwin":
+            os.system(f'open "{opened_path}"')
         
     except Exception as e:
         print(f"Error generating receipt: {e}", file=sys.stderr)
