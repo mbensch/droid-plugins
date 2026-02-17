@@ -418,7 +418,7 @@ def generate_html(session_data: dict) -> str:
       <div class="cashier">SERVED BY: {droid_name}</div>
       <div class="thank-you">Thank you for building!</div>
       <div class="github-link">
-        <a href="https://github.com/Factory-AI/factory" target="_blank">github.com/Factory-AI/factory</a>
+        <a href="https://factory.ai" target="_blank">factory.ai</a>
       </div>
     </div>
   </div>
@@ -581,7 +581,7 @@ def generate_svg(session_data: dict) -> str:
   
   <line x1="100" y1="{total_y + 120}" x2="300" y2="{total_y + 120}" class="light-separator"/>
   
-  <text x="200" y="{total_y + 140}" class="text-small" text-anchor="middle">github.com/Factory-AI/factory</text>
+  <text x="200" y="{total_y + 140}" class="text-small" text-anchor="middle">factory.ai</text>
 </svg>'''
     
     return svg
