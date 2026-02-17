@@ -1,0 +1,18 @@
+{
+  "SessionStart": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${DROID_PLUGIN_ROOT}/hooks/cleanup-worktrees.sh",
+          "timeout": 30
+        },
+        {
+          "type": "command",
+          "command": "${DROID_PLUGIN_ROOT}/hooks/create-worktree.sh",
+          "timeout": 30
+        }
+      ]
+    }
+  ]
+}
