@@ -10,6 +10,12 @@
       "description": "Generate visual receipts for Droid sessions with token breakdown and cost estimation",
       "source": "./plugins/droid-receipts",
       "category": "productivity"
+    },
+    {
+      "name": "droid-worktrees",
+      "description": "Automatically create and manage git worktrees for Droid sessions, isolating each session on its own branch",
+      "source": "./plugins/droid-worktrees",
+      "category": "developer-tools"
     }
   ]
 }
