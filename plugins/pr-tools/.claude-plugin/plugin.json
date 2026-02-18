@@ -1,0 +1,8 @@
+{
+  "name": "pr-tools",
+  "version": "1.0.0",
+  "description": "Safe git push and PR workflow skill that prevents pushing to merged or closed PRs",
+  "author": {
+    "name": "Marcel Bensch"
+  }
+}

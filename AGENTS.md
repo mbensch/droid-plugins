@@ -71,15 +71,23 @@ mb-ai-tools/
 │   │   │   └── using-worktrees/
 │   │   │       └── SKILL.md
 │   │   └── README.md
-│   └── jira-tools/          # Jira ticket management skills
+│   ├── jira-tools/          # Jira ticket management skills
+│   │   ├── .factory-plugin/
+│   │   │   └── plugin.json
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── skills/
+│   │   │   ├── manage-jira/
+│   │   │   ├── create-jira-story/
+│   │   │   └── create-jira-bug/
+│   │   └── README.md
+│   └── pr-tools/            # Safe PR workflow
 │       ├── .factory-plugin/
 │       │   └── plugin.json
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── skills/
-│       │   ├── manage-jira/
-│       │   ├── create-jira-story/
-│       │   └── create-jira-bug/
+│       │   └── safe-pr-workflow/
 │       └── README.md
 └── README.md               # Marketplace docs
 ```

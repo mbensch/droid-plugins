@@ -34,6 +34,12 @@
       "description": "Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools",
       "source": "./plugins/jira-tools",
       "category": "productivity"
+    },
+    {
+      "name": "pr-tools",
+      "description": "Safe git push and PR workflow skill that prevents pushing to merged or closed PRs",
+      "source": "./plugins/pr-tools",
+      "category": "developer-tools"
     }
   ]
 }

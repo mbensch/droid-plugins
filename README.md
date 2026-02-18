@@ -97,6 +97,13 @@ Jira skills for managing tickets, creating stories, and filing bugs via Atlassia
 
 **Requires:** [Atlassian MCP integration](https://app.factory.ai/settings/integrations) configured in Factory settings.
 
+### pr-tools
+
+Safe git push and PR workflow skill that prevents pushing to merged or closed PRs.
+
+**Skills:**
+- `safe-pr-workflow` - Checks branch state before git push and PR creation to avoid silently pushing to dead PRs
+
 ## Platform Compatibility
 
 | Plugin | Factory (Droid) | Claude Code |
@@ -106,6 +113,7 @@ Jira skills for managing tickets, creating stories, and filing bugs via Atlassia
 | manual-worktrees | Yes | Yes |
 | worktrees-skill | Yes | Yes |
 | jira-tools | Yes | Yes |
+| pr-tools | Yes | Yes |
 
 Plugins that rely on Droid-specific lifecycle hooks (`SessionStart`, `SessionEnd`) and environment variables are not available on Claude Code. Plugins using skills and commands work identically on both platforms.
 
