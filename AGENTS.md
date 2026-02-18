@@ -56,12 +56,20 @@ mbensch-droid-plugins/
 │   │   ├── commands/
 │   │   │   └── worktree.md
 │   │   └── README.md
-│   └── worktrees-skill/     # Worktree management skill
+│   ├── worktrees-skill/     # Worktree management skill
+│   │   ├── .factory-plugin/
+│   │   │   └── plugin.json
+│   │   ├── skills/
+│   │   │   └── using-worktrees/
+│   │   │       └── SKILL.md
+│   │   └── README.md
+│   └── jira-tools/          # Jira ticket management skills
 │       ├── .factory-plugin/
 │       │   └── plugin.json
 │       ├── skills/
-│       │   └── using-worktrees/
-│       │       └── SKILL.md
+│       │   ├── manage-jira/
+│       │   ├── create-jira-story/
+│       │   └── create-jira-bug/
 │       └── README.md
 └── README.md               # Marketplace docs
 ```

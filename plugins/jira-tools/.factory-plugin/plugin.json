@@ -1,0 +1,8 @@
+{
+  "name": "jira-tools",
+  "version": "1.0.0",
+  "description": "Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools",
+  "author": {
+    "name": "Marcel Bensch"
+  }
+}
