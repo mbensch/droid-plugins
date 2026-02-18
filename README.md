@@ -99,10 +99,11 @@ Jira skills for managing tickets, creating stories, and filing bugs via Atlassia
 
 ### pr-tools
 
-Safe git push and PR workflow skill that prevents pushing to merged or closed PRs.
+Skills for safe and consistent pull request workflows.
 
 **Skills:**
 - `safe-pr-workflow` - Checks branch state before git push and PR creation to avoid silently pushing to dead PRs
+- `create-pr` - Creates PRs with consistent formatting, Jira-aware branch naming, and repo template support
 
 ## Platform Compatibility
 

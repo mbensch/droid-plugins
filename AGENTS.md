@@ -81,13 +81,14 @@ mb-ai-tools/
 │   │   │   ├── create-jira-story/
 │   │   │   └── create-jira-bug/
 │   │   └── README.md
-│   └── pr-tools/            # Safe PR workflow
+│   └── pr-tools/            # PR workflow tools
 │       ├── .factory-plugin/
 │       │   └── plugin.json
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── skills/
-│       │   └── safe-pr-workflow/
+│       │   ├── safe-pr-workflow/
+│       │   └── create-pr/
 │       └── README.md
 └── README.md               # Marketplace docs
 ```
