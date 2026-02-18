@@ -78,6 +78,17 @@ A skill for systematic git worktree management with smart directory selection an
 - Auto-detection of project setup commands (npm, cargo, pip, go mod)
 - Baseline test verification before starting work
 
+### jira-tools
+
+Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools.
+
+**Skills:**
+- `manage-jira` - General-purpose ticket management (view, edit, search, transition, custom fields)
+- `create-jira-story` - Structured Story creation with consistent formatting
+- `create-jira-bug` - Structured Bug creation with diagnostic formatting
+
+**Requires:** [Atlassian MCP integration](https://app.factory.ai/settings/integrations) configured in Factory settings.
+
 ## Author's Notes
 
 ### Choosing a Worktree Plugin
