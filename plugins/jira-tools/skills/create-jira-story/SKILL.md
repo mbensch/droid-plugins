@@ -1,6 +1,6 @@
 ---
 name: create-jira-story
-version: 1.1.0
+version: 1.2.0
 description: |
   Create a well-structured Jira Story with consistent formatting optimized for both human readers and AI agents.
   Use when the user asks to create a Jira story, write a ticket, or capture work as a story.
@@ -54,6 +54,7 @@ Extract from the user's message:
 - Parent ticket / epic (if mentioned)
 - Explicit exclusions (for Out of Scope)
 - Assignment preference
+- Team preference (if mentioned)
 - Any links or references
 
 ### 2. Ask Clarifying Questions
@@ -64,6 +65,7 @@ Use AskUser when genuinely ambiguous. Common questions:
 - **Scope ambiguity**: "This sounds like it could be multiple stories. Should we split it?"
 - **Assignment**: "Should this be assigned to you or left unassigned?"
 - **Vague criteria**: "Can you clarify what 'improved logging' means specifically? What should be logged?"
+- **Missing team**: "Which team should own this story?" (only if team cannot be inferred from the parent -- see step 6)
 
 Do NOT ask about format -- the format is fixed. Do NOT ask questions you can answer by investigating the codebase.
 
@@ -95,8 +97,24 @@ Use `atlassian___createJiraIssue` via the `manage-jira` skill for API mechanics:
 - `assignee_account_id`: Set when the user requests assignment (look up from an existing ticket if needed)
 - `projectKey`: Derive from the parent ticket's project, or ask the user
 
+### 6. Set Team
+
+Every ticket **must** have a team assigned to appear on the board. Determine the team immediately after creating the ticket:
+
+1. **If a parent ticket was provided**, fetch it with `atlassian___getJiraIssue` and read the team field (`customfield_11100`).
+   - If the parent has a team, use **AskUser** to offer:
+     - *"Use parent's team: \<Team Name\>"*
+     - *"Specify a different team"*
+   - If the parent has no team, ask the user: *"Which team should own this story?"*
+2. **If no parent was provided**, ask the user: *"Which team should own this story?"*
+3. **Set the team** on the newly created ticket via `atlassian___editJiraIssue`:
+   ```
+   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"customfield_11100": "<team-uuid>"})
+   ```
+   To resolve a team name to its UUID, look at the `customfield_11100` value on an existing ticket that belongs to that team (see `manage-jira` skill for details).
+
 ## What This Skill Does NOT Cover
 
 - Other issue types (Bug, Chore, Task, Epic) -- separate skills.
 - Transitioning, editing, or commenting on existing tickets -- use `manage-jira` skill.
-- Sprint, team, or custom field assignment -- use `manage-jira` skill.
+- Sprint or other custom field assignment -- use `manage-jira` skill.
