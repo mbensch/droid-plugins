@@ -1,6 +1,6 @@
 ---
 name: manage-jira
-version: 2.0.0
+version: 2.1.0
 description: |
   Manage JIRA tickets using the Atlassian MCP tools (preferred) or Atlassian CLI (acli) as fallback.
   Use when the user asks to view, edit, comment on, create, search, or transition JIRA tickets.
@@ -15,6 +15,22 @@ description: |
 2. **acli CLI** (fallback) -- good for basic operations, but cannot set custom fields
 
 Use the MCP tools for anything involving custom fields (team, sprint, story points, etc.). Fall back to acli only when MCP is unavailable or for operations MCP doesn't cover (like opening a ticket in the browser).
+
+## Formatting: Always Use Markdown
+
+The MCP tools (`createJiraIssue`, `editJiraIssue`, `addCommentToJiraIssue`) accept **Markdown only**. They internally convert Markdown to Atlassian Document Format (ADF). Never use Jira wiki markup with these tools -- it will be stored as raw text and won't render.
+
+| What you want | Correct (Markdown) | Wrong (Wiki markup) |
+|---------------|-------------------|-------------------|
+| Heading | `## Heading` | `h2. Heading` |
+| Bold | `**bold**` | `*bold*` |
+| Inline code | `` `code` `` | `{{code}}` |
+| Code block | ` ```lang ` | `{code:lang}` |
+| Bullet list | `* item` or `- item` | `* item` (same, but context matters) |
+| Numbered list | `1. item` | `# item` |
+| Link | `[text](url)` | `[text\|url]` |
+
+This applies to the `description` parameter in `createJiraIssue`, the `fields` object in `editJiraIssue`, and the `commentBody` in `addCommentToJiraIssue`.
 
 ## Getting Started with Atlassian MCP
 

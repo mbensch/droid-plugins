@@ -1,6 +1,6 @@
 ---
 name: create-jira-story
-version: 1.0.0
+version: 1.1.0
 description: |
   Create a well-structured Jira Story with consistent formatting optimized for both human readers and AI agents.
   Use when the user asks to create a Jira story, write a ticket, or capture work as a story.
@@ -36,6 +36,7 @@ Every story MUST use this exact structure. Do not deviate.
 - **Additional Information / Links**: Only include when there is genuinely useful context to link. Never duplicate information already present in other Jira fields (Reporter, Product Owner, assignee, parent, etc.). Omit if empty.
 - If any section lacks information, use AskUser to prompt the user rather than leaving placeholders.
 - Clear, concise, professional tone throughout.
+- **Always use Markdown formatting.** The MCP tools convert Markdown to ADF internally. Never use Jira wiki markup (`h2.`, `{{code}}`, `{code}`, `#` for numbered lists). Use `## Heading`, `` `code` ``, triple-backtick fenced code blocks, and `1.` for numbered lists.
 
 ### Summary Line
 

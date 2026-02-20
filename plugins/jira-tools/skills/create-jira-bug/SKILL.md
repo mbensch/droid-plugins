@@ -1,6 +1,6 @@
 ---
 name: create-jira-bug
-version: 1.0.0
+version: 1.1.0
 description: |
   Create a well-structured Jira Bug with consistent formatting optimized for both human readers and AI agents.
   Use when the user asks to file a bug, report a defect, or log an issue they encountered.
@@ -33,6 +33,7 @@ Every bug MUST use this exact structure. Do not deviate.
 - **Additional Information / Links**: Always include for bugs -- at minimum state the environment (prod/staging/dev). Add logs, screenshots, error messages, related tickets, or Datadog/Splunk links when available. Never duplicate information already present in other Jira fields (Reporter, assignee, parent, etc.).
 - If any section lacks information, use AskUser to prompt the user rather than leaving placeholders.
 - Clear, concise, diagnostic tone throughout.
+- **Always use Markdown formatting.** The MCP tools convert Markdown to ADF internally. Never use Jira wiki markup (`h2.`, `{{code}}`, `{code}`, `#` for numbered lists). Use `## Heading`, `` `code` ``, triple-backtick fenced code blocks, and `1.` for numbered lists.
 
 ### Summary Line
 
