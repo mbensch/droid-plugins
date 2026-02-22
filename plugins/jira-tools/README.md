@@ -1,6 +1,6 @@
 # Jira Tools
 
-A Factory plugin for Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.
+A Factory plugin for Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create any issue type (Objectives, Initiatives, Epics, Stories, Bugs, and more) with guided intake and optional codebase analysis.
 
 ## Installation
 
@@ -34,10 +34,11 @@ Requires the [Atlassian MCP integration](https://app.factory.ai/settings/integra
 The primary entry point for creating any Jira issue type. The command:
 
 1. Detects whether you are inside a git repository
-2. Asks what type of issue you want to create (Initiative, Epic, Story, Bug)
-3. Gathers your initial description
-4. Optionally analyzes the codebase to produce a more accurate ticket (for technical requests in a repo)
-5. Delegates to the appropriate create skill, which handles clarifying questions, description formatting, ticket creation, and team assignment
+2. Detects your Atlassian org and asks which project to work in; activates a project-specific skill when org and project match (e.g. `cars-project` for carscommerce/CARS)
+3. Fetches available issue types from the selected project and asks which to create
+4. Gathers your initial description
+5. Asks whether to analyze the codebase (when in a git repo) to produce a more accurate ticket
+6. Delegates to the appropriate `create-jira-*` skill, which handles clarifying questions, description formatting, ticket creation, and any project-specific post-creation steps
 
 ## Skills
 
@@ -91,7 +92,11 @@ Originally authored by [Factory-AI/factory-plugins](https://github.com/Factory-A
 
 ### `cars-project` *(internal)*
 
-CARS project-specific configuration for the `carscommerce.atlassian.net` org. Activated automatically by `/jira-create` when the user is authenticated to carscommerce and selects the CARS project. Provides team field ID and UUID resolution instructions so create skills do not hardcode org-specific values.
+CARS project-specific configuration for the `carscommerce.atlassian.net` org. Activated automatically by `/jira-create` when the user is authenticated to carscommerce and selects the CARS project. Provides:
+
+- Work hierarchy: Objective → Initiative → Epic → Story/Bug/Task → Sub-Task
+- Custom field IDs: team (`customfield_11100`), sprint (`customfield_10007`), story points (`customfield_10004`)
+- Post-creation steps: mandatory team assignment with parent inheritance logic
 
 ## Plugin Structure
 
