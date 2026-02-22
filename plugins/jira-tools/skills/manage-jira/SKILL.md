@@ -1,6 +1,7 @@
 ---
 name: manage-jira
 version: 2.1.0
+user-invocable: false
 description: |
   Manage JIRA tickets using the Atlassian MCP tools (preferred) or Atlassian CLI (acli) as fallback.
   Use when the user asks to view, edit, comment on, create, search, or transition JIRA tickets.

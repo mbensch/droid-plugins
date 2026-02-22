@@ -51,7 +51,7 @@ The primary entry point for creating any Jira issue type. The command:
 
 ## Skills
 
-### `manage-jira`
+### `manage-jira` *(internal)*
 
 General-purpose Jira ticket management. Automatically used when you ask to:
 

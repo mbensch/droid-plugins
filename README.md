@@ -77,17 +77,10 @@ A skill for systematic git worktree management with smart directory selection an
 
 ### jira-tools
 
-Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.
+Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create Objectives, Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.
 
 **Commands:**
 - `/jira-create` - Guided entry point: picks issue type, gathers intent, optionally analyzes the codebase, then creates the ticket
-
-**Skills:**
-- `manage-jira` - General-purpose ticket management (view, edit, search, transition, custom fields)
-- `create-jira-initiative` - Structured Initiative creation (internal, invoked by `/jira-create`)
-- `create-jira-epic` - Structured Epic creation (internal, invoked by `/jira-create`)
-- `create-jira-story` - Structured Story creation (internal, invoked by `/jira-create`)
-- `create-jira-bug` - Structured Bug creation (internal, invoked by `/jira-create`)
 
 **Requires:** [Atlassian MCP integration](https://app.factory.ai/settings/integrations) configured in Factory settings.
 
@@ -106,6 +99,7 @@ Generate and maintain a `STEERING.md` file that defines non-negotiable rules for
 **Commands:**
 - `/init-steering` - Deep-scans the codebase (manifests, linter configs, docs, CI workflows) and generates a tailored `STEERING.md`. Also updates `AGENTS.md` and installs a project-local `tech-stack` skill.
 - `/update-steering` - Guided command to add or modify rules in `STEERING.md` (new "do"/"don't" rules, tech stack changes, conventions, architecture constraints)
+- `/remove-steering` - Remove all steering artifacts: deletes `STEERING.md`, removes the `tech-stack` skill, and strips the steering section from `AGENTS.md`
 
 **Skills:**
 - `tech-stack` - Auto-loaded project skill (installed by `/init-steering`) that enforces reading `STEERING.md` before every technology or architecture decision
