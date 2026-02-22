@@ -12,20 +12,12 @@ This marketplace provides plugins for Jira integration, git worktree management,
 
 ```bash
 droid plugin marketplace add https://github.com/mbensch/mb-ai-tools
-droid plugin install pr-tools@mb-ai-tools
-droid plugin install jira-tools@mb-ai-tools
-droid plugin install manual-worktrees@mb-ai-tools
-droid plugin install steering@mb-ai-tools
 ```
 
 ### Claude Code
 
 ```bash
 /plugin marketplace add https://github.com/mbensch/mb-ai-tools
-/plugin install pr-tools@mb-ai-tools
-/plugin install jira-tools@mb-ai-tools
-/plugin install manual-worktrees@mb-ai-tools
-/plugin install steering@mb-ai-tools
 ```
 
 Browse all available plugins: `/plugins` (Droid) or `/plugin marketplace list` (Claude Code).
@@ -35,6 +27,10 @@ Browse all available plugins: `/plugins` (Droid) or `/plugin marketplace list` (
 ### droid-receipts
 
 Generate visual receipts for Droid sessions showing token usage and costs.
+
+```bash
+droid plugin install droid-receipts@mb-ai-tools
+```
 
 **Features:**
 - Automatic receipt generation when sessions end (via SessionEnd hook)
@@ -48,6 +44,10 @@ Generate visual receipts for Droid sessions showing token usage and costs.
 
 Automatically create and manage git worktrees for Droid sessions, isolating each session on its own branch.
 
+```bash
+droid plugin install auto-worktrees@mb-ai-tools
+```
+
 **Features:**
 - Creates isolated worktree for each session on `droid/{session_id}` branch
 - Worktrees created at `../droid-worktrees/{repo}-{session_id}/`
@@ -59,6 +59,13 @@ Automatically create and manage git worktrees for Droid sessions, isolating each
 
 On-demand git worktree creation via a slash command.
 
+```bash
+# Factory
+droid plugin install manual-worktrees@mb-ai-tools
+# Claude Code
+/plugin install manual-worktrees@mb-ai-tools
+```
+
 **Features:**
 - `/worktree` - Create a worktree for the current session on demand
 - Session isolation with dedicated branches
@@ -67,6 +74,13 @@ On-demand git worktree creation via a slash command.
 ### worktrees-skill
 
 A skill for systematic git worktree management with smart directory selection and safety verification.
+
+```bash
+# Factory
+droid plugin install worktrees-skill@mb-ai-tools
+# Claude Code
+/plugin install worktrees-skill@mb-ai-tools
+```
 
 **Features:**
 - Auto-invoked skill for creating isolated worktrees
@@ -79,6 +93,13 @@ A skill for systematic git worktree management with smart directory selection an
 
 Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create Objectives, Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.
 
+```bash
+# Factory
+droid plugin install jira-tools@mb-ai-tools
+# Claude Code
+/plugin install jira-tools@mb-ai-tools
+```
+
 **Commands:**
 - `/jira-create` - Guided entry point: picks issue type, gathers intent, optionally analyzes the codebase, then creates the ticket
 
@@ -88,6 +109,13 @@ Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` t
 
 Skills for safe and consistent pull request workflows.
 
+```bash
+# Factory
+droid plugin install pr-tools@mb-ai-tools
+# Claude Code
+/plugin install pr-tools@mb-ai-tools
+```
+
 **Skills:**
 - `safe-pr-workflow` - Checks branch state before git push and PR creation to avoid silently pushing to dead PRs
 - `create-pr` - Creates PRs with consistent formatting, Jira-aware branch naming, and repo template support
@@ -95,6 +123,13 @@ Skills for safe and consistent pull request workflows.
 ### steering
 
 Generate and maintain a `STEERING.md` file that defines non-negotiable rules for AI agents working in your codebase. Inspired by Kiro's steering file concept.
+
+```bash
+# Factory
+droid plugin install steering@mb-ai-tools
+# Claude Code
+/plugin install steering@mb-ai-tools
+```
 
 **Commands:**
 - `/init-steering` - Deep-scans the codebase (manifests, linter configs, docs, CI workflows) and generates a tailored `STEERING.md`. Also updates `AGENTS.md` and installs a project-local `tech-stack` skill.
