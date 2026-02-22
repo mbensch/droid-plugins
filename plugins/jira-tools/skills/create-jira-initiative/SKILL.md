@@ -89,11 +89,9 @@ Use `atlassian___createJiraIssue` via the `manage-jira` skill for API mechanics:
 - `issueTypeName`: Always `"Initiative"`
 - `projectKey`: Ask the user if not obvious from context
 
-### 5. Set Team
+### 5. Post-Creation Steps
 
-Every ticket **must** have a team assigned to appear on the board. Follow the team assignment instructions from the active project skill (e.g. `cars-project`), which contains the correct custom field ID and team UUID resolution steps for the current org.
-
-If no project skill is active, ask the user which team should own this initiative, then set it via `atlassian___editJiraIssue` using the field ID and value format appropriate for the org (see `manage-jira` skill for discovery steps).
+After creating the ticket, follow any post-creation steps defined by the active project skill (e.g. `cars-project`). These may include setting required custom fields such as team. If no project skill is active, skip this step.
 
 ## What This Skill Does NOT Cover
 

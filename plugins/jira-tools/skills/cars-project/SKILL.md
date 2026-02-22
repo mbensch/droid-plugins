@@ -20,6 +20,10 @@ This skill is activated by `/jira-create` when the authenticated user's Atlassia
 | Sprint | `customfield_10007` | Plain integer ID |
 | Story Points | `customfield_10004` | Numeric value |
 
+## Post-Creation Steps
+
+Every ticket created in the CARS project **must** have a team assigned to appear on the board. Immediately after the ticket is created by a `create-jira-*` skill, follow the team assignment steps below.
+
 ## Team Field
 
 ### Resolving a Team UUID
