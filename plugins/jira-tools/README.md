@@ -53,6 +53,12 @@ General-purpose Jira ticket management. Droid will automatically use this skill 
 
 Includes a full acli command reference and troubleshooting guide.
 
+### `create-jira-objective` *(internal)*
+
+Structured Jira Objective creation. Invoked by `/jira-create`. Objectives are the highest level of the work hierarchy (Objective → Initiative → Epic → Story/Bug).
+
+**Format:** Description (S.M.A.R.T), Key Results (1-3), Milestones / Phases (each maps to an Initiative).
+
 ### `create-jira-initiative` *(internal)*
 
 Structured Jira Initiative creation. Invoked by `/jira-create`.
@@ -106,6 +112,8 @@ jira-tools/
 │   │       ├── search-tickets.sh
 │   │       ├── add-comment.sh
 │   │       └── update-description.sh
+│   ├── create-jira-objective/
+│   │   └── SKILL.md
 │   ├── create-jira-initiative/
 │   │   └── SKILL.md
 │   ├── create-jira-epic/

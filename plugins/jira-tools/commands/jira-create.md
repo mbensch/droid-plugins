@@ -1,5 +1,5 @@
 ---
-description: Create a Jira issue (Initiative, Epic, Story, or Bug) with guided intake and optional codebase analysis
+description: Create a Jira issue with guided intake and optional codebase analysis. Supports any issue type available in the project.
 disable-model-invocation: false
 ---
 
@@ -39,12 +39,7 @@ The create skills fall back to generic team field discovery when no project skil
 
 ## Step 3: Ask What to Create
 
-Use AskUser to ask the user what type of Jira issue they want to create:
-
-- Initiative
-- Epic
-- Story
-- Bug
+Call `atlassian___getJiraProjectIssueTypesMetadata` for the selected project to get the list of available issue types. Present the issue type names to the user via AskUser and ask which they want to create.
 
 ## Step 4: Gather Initial Intent
 
@@ -56,16 +51,17 @@ If the user is in a codebase context (detected in Step 1), always ask the user v
 
 ## Step 6: Invoke the Matching Skill
 
-Based on the issue type chosen in Step 2, invoke the corresponding skill:
+Look up the selected issue type name in the table below and invoke the corresponding skill. If no matching skill exists, use `manage-jira` to create the ticket directly and write a plain description based on the user's input.
 
-| Issue Type | Skill to invoke |
-|------------|----------------|
+| Issue type name | Skill to invoke |
+|-----------------|----------------|
+| Objective | `create-jira-objective` |
 | Initiative | `create-jira-initiative` |
-| Epic       | `create-jira-epic` |
-| Story      | `create-jira-story` |
-| Bug        | `create-jira-bug` |
+| Epic | `create-jira-epic` |
+| Story | `create-jira-story` |
+| Bug | `create-jira-bug` |
 
-Pass the user's description, codebase findings (if any), and the active project skill context to the skill. The skill will handle clarifying questions, description drafting, ticket creation, and team assignment.
+Pass the user's description, codebase findings (if any), and the active project skill context to the skill. The skill will handle clarifying questions, description drafting, ticket creation, and post-creation steps.
 
 ## Notes
 

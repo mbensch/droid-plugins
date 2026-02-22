@@ -1,16 +1,40 @@
 ---
 name: cars-project
-version: 1.0.0
+version: 1.1.0
 user-invocable: false
 description: |
   CARS project-specific configuration for the carscommerce.atlassian.net org.
   Activated automatically by /jira-create when the user is working in the CARS project.
-  Provides team field setup and UUID resolution instructions specific to carscommerce.
+  Provides work hierarchy, issue type names, team field setup, and UUID resolution instructions specific to carscommerce.
 ---
 
 # CARS Project Configuration
 
 This skill is activated by `/jira-create` when the authenticated user's Atlassian site is `carscommerce.atlassian.net` and the user selects the CARS project. It provides the custom field IDs and value formats specific to this org.
+
+## Work Hierarchy
+
+The CARS project uses the following hierarchy from highest to lowest:
+
+```
+Objective
+  └── Initiative
+        └── Epic
+              └── Story / Bug / Task
+                    └── Sub-Task
+```
+
+| Level | Jira issue type name | Skill |
+|-------|---------------------|-------|
+| Objective | `Objective` | `create-jira-objective` |
+| Initiative | `Initiative` | `create-jira-initiative` |
+| Epic | `Epic` | `create-jira-epic` |
+| Story | `Story` | `create-jira-story` |
+| Bug | `Bug` | `create-jira-bug` |
+| Task | `Task` | `manage-jira` (generic) |
+| Sub-Task | `Sub-task` | `manage-jira` (generic) |
+
+When creating a ticket, use the exact issue type name from the "Jira issue type name" column above in `atlassian___createJiraIssue`.
 
 ## Custom Field IDs
 
