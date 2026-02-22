@@ -19,19 +19,23 @@ Store the result. If it succeeds, the user is in a codebase context -- keep this
 
 ## Step 2: Detect Atlassian Org and Project
 
-Call `atlassian___getAccessibleAtlassianResources` to get the list of Atlassian sites the user has access to. Use the site URL to identify the org.
-
-Check the site URL against the known project skills below. If a match is found, ask the user which project they want to work in by calling `atlassian___getVisibleJiraProjects` and presenting the list via AskUser. Activate the matching project skill for the rest of this command invocation.
+1. Call `atlassian___getAccessibleAtlassianResources` to get the list of Atlassian sites. Note the site URL to identify the org.
+2. Call `atlassian___getVisibleJiraProjects` and use **AskUser** to ask which project the user wants to work in (present the project names from the API response). Store the selected project key.
+3. Check whether **both** the org and the selected project match a row in the table below. Only if both match should the corresponding skill be activated.
 
 **Known project skills:**
 
-| Org (site URL contains) | Project | Skill to activate |
-|-------------------------|---------|-------------------|
-| `carscommerce` | CARS | `cars-project` |
+| Org (site URL contains) | Project key | Skill to activate |
+|-------------------------|-------------|-------------------|
+| `carscommerce` | `CARS` | `cars-project` |
 
-If no site matches a known project skill, proceed without activating one. The create skills will fall back to generic team field discovery.
+- If both org and project match a row: activate the skill for the rest of this command invocation.
+- If only the org matches but a different project was selected: proceed without a project skill.
+- If no org matches: proceed without a project skill.
 
-> **Adding support for a new org:** Create a new skill under `skills/<org-name>-project/SKILL.md` with `user-invocable: false`, document the org's custom field IDs and team UUID resolution steps, then add a row to the table above.
+The create skills fall back to generic team field discovery when no project skill is active.
+
+> **Adding support for a new org/project:** Create a new skill under `skills/<name>-project/SKILL.md` with `user-invocable: false`, document the org's custom field IDs and resolution steps, then add a row to the table above.
 
 ## Step 3: Ask What to Create
 
