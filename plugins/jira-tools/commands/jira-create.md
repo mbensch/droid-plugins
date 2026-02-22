@@ -15,7 +15,7 @@ Check whether the user is inside a git repository:
 git rev-parse --show-toplevel 2>/dev/null
 ```
 
-Store the result. If it succeeds, the user is in a codebase context -- keep this in mind for Step 4.
+Store the result. If it succeeds, the user is in a codebase context -- keep this in mind for Step 5.
 
 ## Step 2: Detect Atlassian Org and Project
 
