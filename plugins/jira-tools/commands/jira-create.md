@@ -56,3 +56,4 @@ Pass the user's description and any codebase findings to the skill as context. T
 - The `manage-jira` skill governs all Atlassian MCP API mechanics (cloudId resolution, field formats, custom fields). The create skills rely on it -- do not duplicate that logic here.
 - Do not create the ticket in this command. Delegate entirely to the appropriate create skill.
 - If the user is not authenticated to Atlassian, the create skill will surface the error -- do not pre-check here.
+- The `human-writing` skill is active for this command. Apply its guidelines to all ticket content you write: summaries, background sections, acceptance criteria, and any other free-text fields. Avoid AI vocabulary words, inflated significance, promotional language, superficial -ing phrases, em dash overuse, rule of three, and sycophantic tone. Write like a person, not a press release.

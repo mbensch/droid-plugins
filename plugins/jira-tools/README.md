@@ -77,6 +77,10 @@ Structured Jira Bug creation. Invoked by `/jira-create`.
 
 **Format:** Description, Steps to Reproduce, Additional Information/Links.
 
+### `human-writing` *(internal)*
+
+Applies human-writing guidelines to all ticket content drafted by `/jira-create`. Removes AI-sounding patterns (inflated significance, promotional language, em dash overuse, rule of three, AI vocabulary words) and ensures descriptions read like a person wrote them. Based on Wikipedia's "Signs of AI writing" guide.
+
 ## Plugin Structure
 
 ```
@@ -102,7 +106,9 @@ jira-tools/
 │   │   └── SKILL.md
 │   ├── create-jira-story/
 │   │   └── SKILL.md
-│   └── create-jira-bug/
+│   ├── create-jira-bug/
+│   │   └── SKILL.md
+│   └── human-writing/
 │       └── SKILL.md
 └── README.md
 ```
