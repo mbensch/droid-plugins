@@ -31,7 +31,7 @@
     },
     {
       "name": "jira-tools",
-      "description": "Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools",
+      "description": "Jira issue creation and management via Atlassian MCP tools. Use /jira-create to create Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.",
       "source": "./plugins/jira-tools",
       "category": "productivity"
     },

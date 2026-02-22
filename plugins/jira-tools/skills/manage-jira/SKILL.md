@@ -105,7 +105,7 @@ atlassian___addCommentToJiraIssue(cloudId, issueIdOrKey: "PROJ-123", commentBody
 #### Search (Rovo -- general search across Jira and Confluence)
 
 ```
-atlassian___search(query: "dealer domain docker build")
+atlassian___search(query: "authentication service deployment")
 ```
 
 Use this for broad searches. Use `searchJiraIssuesUsingJql` when you need precise JQL filtering.
@@ -116,27 +116,29 @@ This is where MCP shines over acli. The acli `edit` command does not support cus
 
 ### Discovering Custom Field IDs
 
-To find custom field IDs and their expected formats, view an existing ticket with all fields:
+Custom field IDs vary between Jira instances. Never assume a field ID -- always discover it first by viewing an existing ticket that has the field set:
 
 ```
 atlassian___getJiraIssue(cloudId, issueIdOrKey: "PROJ-123")
 ```
 
-Then look through the `fields` object for non-null custom fields. Common ones:
+Scan the `fields` object for non-null entries with keys like `customfield_XXXXX`. Common fields and how to recognise them:
 
-| Field | Typical ID | Notes |
-|-------|-----------|-------|
-| Sprint | `customfield_10007` | Varies by instance |
-| Team | `customfield_11100` | Varies by instance |
-| Story Points | `customfield_10004` | Varies by instance |
+| Field | How to identify | Typical format |
+|-------|----------------|----------------|
+| Sprint | Array of sprint objects with `id`, `name`, `state` | `customfield_XXXXX` |
+| Team | String UUID or object with team name | `customfield_XXXXX` |
+| Story Points | Numeric value | `customfield_XXXXX` |
+
+If the active project skill (e.g. `cars-project`) provides field IDs for the current org, use those instead of discovering them manually.
 
 ### Setting Team
 
-The team field value format depends on how it was configured. Try a plain string ID first:
+The team field ID and value format vary by instance. Discover the field ID by inspecting an existing ticket, then set it:
 
 ```
 atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-123", fields: {
-  "customfield_11100": "51869d83-db7d-4d45-bed0-131a61dd5c9a"
+  "<team-field-id>": "<team-uuid>"
 })
 ```
 
@@ -144,19 +146,21 @@ atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-123", fields: {
 
 **What does NOT work:** Wrapping it in `{"id": "..."}` returns a 400 Bad Request.
 
-To find the team ID, look at an existing ticket that already has the team set.
+To find the team UUID, look at an existing ticket that already has the team set and read the value from the relevant `customfield_XXXXX` key.
 
 ### Setting Sprint
 
+The sprint field ID varies by instance. Discover it from an existing ticket, then set it:
+
 ```
 atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-123", fields: {
-  "customfield_10007": 22725
+  "<sprint-field-id>": <sprint-id-integer>
 })
 ```
 
 **What works:** Pass the sprint ID as a plain integer.
 
-**What does NOT work:** Wrapping it in `{"id": 22725}` returns a 400 Bad Request.
+**What does NOT work:** Wrapping it in `{"id": ...}` returns a 400 Bad Request.
 
 To find the sprint ID, look at an existing ticket in the target sprint. The sprint field contains an array of sprint objects with `id`, `name`, `state`, `startDate`, `endDate`.
 
@@ -217,11 +221,11 @@ acli jira workitem transition --key "PROJ-123" --status "In Progress" --yes
 This is the pattern that works reliably end-to-end, using MCP for every step:
 
 1. **Get cloudId** via `getAccessibleAtlassianResources`
-2. **Find field values** by viewing an existing ticket in the target project/sprint/team:
+2. **Discover custom field IDs** by viewing an existing ticket in the target project that already has team and sprint set:
    ```
    atlassian___getJiraIssue(cloudId, issueIdOrKey: "EXISTING-123")
    ```
-   Extract sprint ID from `customfield_10007[0].id` and team ID from `customfield_11100.id`.
+   Identify the sprint field key (look for an array of sprint objects), the team field key (look for a UUID string or team name object), and any other needed custom fields. If the active project skill provides these IDs, skip this step.
 3. **Create the ticket** via MCP:
    ```
    atlassian___createJiraIssue(
@@ -235,8 +239,8 @@ This is the pattern that works reliably end-to-end, using MCP for every step:
    The response includes the new ticket's `key` (e.g. `PROJ-456`).
 4. **Set custom fields** via MCP (one call per field if batching fails):
    ```
-   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"customfield_11100": "team-uuid"})
-   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"customfield_10007": 22725})
+   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"<team-field-id>": "<team-uuid>"})
+   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"<sprint-field-id>": <sprint-id-integer>})
    ```
 5. **Verify** by viewing the ticket:
    ```

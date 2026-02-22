@@ -1,7 +1,7 @@
 {
   "name": "jira-tools",
-  "version": "1.0.0",
-  "description": "Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools",
+  "version": "2.0.0",
+  "description": "Jira issue creation and management via Atlassian MCP tools. Use /jira-create to create Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.",
   "author": {
     "name": "Marcel Bensch"
   }

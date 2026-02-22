@@ -1,10 +1,10 @@
 ---
 name: create-jira-story
-version: 1.2.0
+version: 1.3.0
+user-invocable: false
 description: |
   Create a well-structured Jira Story with consistent formatting optimized for both human readers and AI agents.
-  Use when the user asks to create a Jira story, write a ticket, or capture work as a story.
-  Handles clarifying questions, optional codebase investigation, and MCP-based ticket creation.
+  Invoked internally by the /jira-create command. Handles clarifying questions, optional codebase investigation, and MCP-based ticket creation.
 ---
 
 # Create Jira Story
@@ -97,21 +97,9 @@ Use `atlassian___createJiraIssue` via the `manage-jira` skill for API mechanics:
 - `assignee_account_id`: Set when the user requests assignment (look up from an existing ticket if needed)
 - `projectKey`: Derive from the parent ticket's project, or ask the user
 
-### 6. Set Team
+### 6. Post-Creation Steps
 
-Every ticket **must** have a team assigned to appear on the board. Determine the team immediately after creating the ticket:
-
-1. **If a parent ticket was provided**, fetch it with `atlassian___getJiraIssue` and read the team field (`customfield_11100`).
-   - If the parent has a team, use **AskUser** to offer:
-     - *"Use parent's team: \<Team Name\>"*
-     - *"Specify a different team"*
-   - If the parent has no team, ask the user: *"Which team should own this story?"*
-2. **If no parent was provided**, ask the user: *"Which team should own this story?"*
-3. **Set the team** on the newly created ticket via `atlassian___editJiraIssue`:
-   ```
-   atlassian___editJiraIssue(cloudId, issueIdOrKey: "PROJ-456", fields: {"customfield_11100": "<team-uuid>"})
-   ```
-   To resolve a team name to its UUID, look at the `customfield_11100` value on an existing ticket that belongs to that team (see `manage-jira` skill for details).
+After creating the ticket, follow any post-creation steps defined by the active project skill (e.g. `cars-project`). These may include setting required custom fields such as team. If no project skill is active, skip this step.
 
 ## What This Skill Does NOT Cover
 

@@ -77,12 +77,17 @@ A skill for systematic git worktree management with smart directory selection an
 
 ### jira-tools
 
-Jira skills for managing tickets, creating stories, and filing bugs via Atlassian MCP tools.
+Jira issue creation and management via Atlassian MCP tools. Use `/jira-create` to create Initiatives, Epics, Stories, and Bugs with guided intake and optional codebase analysis.
+
+**Commands:**
+- `/jira-create` - Guided entry point: picks issue type, gathers intent, optionally analyzes the codebase, then creates the ticket
 
 **Skills:**
 - `manage-jira` - General-purpose ticket management (view, edit, search, transition, custom fields)
-- `create-jira-story` - Structured Story creation with consistent formatting
-- `create-jira-bug` - Structured Bug creation with diagnostic formatting
+- `create-jira-initiative` - Structured Initiative creation (internal, invoked by `/jira-create`)
+- `create-jira-epic` - Structured Epic creation (internal, invoked by `/jira-create`)
+- `create-jira-story` - Structured Story creation (internal, invoked by `/jira-create`)
+- `create-jira-bug` - Structured Bug creation (internal, invoked by `/jira-create`)
 
 **Requires:** [Atlassian MCP integration](https://app.factory.ai/settings/integrations) configured in Factory settings.
 
