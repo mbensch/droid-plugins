@@ -19,12 +19,19 @@ Store the result. If it succeeds, the user is in a codebase context -- keep this
 
 ## Step 2: Detect Atlassian Org and Project
 
-Call `atlassian___getAccessibleAtlassianResources` to get the list of Atlassian sites the user has access to.
+Call `atlassian___getAccessibleAtlassianResources` to get the list of Atlassian sites the user has access to. Use the site URL to identify the org.
 
-- If a site with URL containing `carscommerce` is found, set the active org to `carscommerce`.
-- Then call `atlassian___getVisibleJiraProjects` to fetch available projects for that site, and use **AskUser** to ask the user which project they want to work in (present the list of project names from the API response).
-- If the user selects the **CARS** project, activate the `cars-project` skill for the rest of this command invocation. This skill provides org-specific team field configuration.
-- If no `carscommerce` site is found, proceed without activating any project-specific skill.
+Check the site URL against the known project skills below. If a match is found, ask the user which project they want to work in by calling `atlassian___getVisibleJiraProjects` and presenting the list via AskUser. Activate the matching project skill for the rest of this command invocation.
+
+**Known project skills:**
+
+| Org (site URL contains) | Project | Skill to activate |
+|-------------------------|---------|-------------------|
+| `carscommerce` | CARS | `cars-project` |
+
+If no site matches a known project skill, proceed without activating one. The create skills will fall back to generic team field discovery.
+
+> **Adding support for a new org:** Create a new skill under `skills/<org-name>-project/SKILL.md` with `user-invocable: false`, document the org's custom field IDs and team UUID resolution steps, then add a row to the table above.
 
 ## Step 3: Ask What to Create
 

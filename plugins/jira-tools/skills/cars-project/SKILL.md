@@ -10,11 +10,17 @@ description: |
 
 # CARS Project Configuration
 
-This skill is activated by `/jira-create` when the authenticated user's Atlassian site is `carscommerce.atlassian.net` and the user selects the CARS project. It governs how team fields are set on newly created tickets in this org.
+This skill is activated by `/jira-create` when the authenticated user's Atlassian site is `carscommerce.atlassian.net` and the user selects the CARS project. It provides the custom field IDs and value formats specific to this org.
+
+## Custom Field IDs
+
+| Field | Custom field ID | Value format |
+|-------|----------------|--------------|
+| Team | `customfield_11100` | Plain string UUID |
+| Sprint | `customfield_10007` | Plain integer ID |
+| Story Points | `customfield_10004` | Numeric value |
 
 ## Team Field
-
-In the carscommerce org, the team custom field ID is `customfield_11100`.
 
 ### Resolving a Team UUID
 
@@ -46,3 +52,27 @@ Pass the UUID as a plain string. Do **not** wrap it in `{"id": "..."}` -- that r
    - If set, offer the user the option to inherit the parent's team or specify a different one via AskUser.
    - If not set, ask the user which team should own this ticket.
 2. If there is no parent, ask the user which team should own this ticket.
+
+## Sprint Field
+
+To find the sprint ID, view an existing ticket in the target sprint and read `customfield_10007`. It contains an array of sprint objects -- use the `id` from the active sprint object.
+
+```
+atlassian___editJiraIssue(
+  cloudId,
+  issueIdOrKey: "CARS-<new-ticket>",
+  fields: {"customfield_10007": <sprint-id-integer>}
+)
+```
+
+Pass the sprint ID as a plain integer. Do **not** wrap it in `{"id": ...}`.
+
+## Story Points Field
+
+```
+atlassian___editJiraIssue(
+  cloudId,
+  issueIdOrKey: "CARS-<new-ticket>",
+  fields: {"customfield_10004": <points>}
+)
+```

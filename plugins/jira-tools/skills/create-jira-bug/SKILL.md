@@ -39,7 +39,7 @@ Every bug MUST use this exact structure. Do not deviate.
 
 - Concise phrase describing the defect.
 - Not a commit message -- no `fix:` prefix.
-- Describe the symptom, not the fix: "GraphQL endpoint returns 500 on empty dealer ID" not "Add nil check for dealer ID".
+- Describe the symptom, not the fix: "GraphQL endpoint returns 500 on empty input" not "Add nil check for input parameter".
 
 ## Workflow
 
